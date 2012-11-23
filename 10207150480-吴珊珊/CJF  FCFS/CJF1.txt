@@ -1,0 +1,73 @@
+# include < iostream >
+   using  namespace  std ;
+    struct process{
+     int processId ;
+     double burstTime ;
+     double arrivetime;
+   };
+    
+int main(){
+   const  int n=5;
+   
+    //number of process 
+    cout << "\nNUMBER OF PROCESS: " ;
+    struct process p[n];
+    struct process temp;
+     int i;
+     int j;
+     int waitingTime = 0 ;
+  double finishtime=0;
+   double wholetime=0;
+   double weightwholetime=0;
+   double averagewt=0;
+   double averagewwt=0;
+   //burst time 
+   for (i= 0 ; i<n; i++){
+       p[i].processId = i+ 1 ;
+         cout << "**************** **************\n" ;
+         cout << "PROCESS " << i+ 1 << "\n" ;
+         
+         cout << "\tarriveTIME: " <<endl;
+          cin>> p[i].arrivetime;
+           cout << "\tBURST TIME: " <<endl;
+        cin>> p[i].burstTime;
+      if(finishtime>=p[i].arrivetime)
+	 finishtime=finishtime+p[i].arrivetime;
+        else
+			finishtime=p[i].arrivetime+p[i].burstTime;
+         wholetime=finishtime-p[i].arrivetime;
+        weightwholetime=wholetime/p[i].burstTime;
+         averagewt+=wholetime;
+         averagewwt+=weightwholetime;}
+        
+      
+
+      //sort 
+    for (i= 0 ; i<n; i++){
+          for (j= 0 ; j<n ; j++){
+              if (p[j].burstTime>p[i].burstTime){
+                 temp = p[i];
+                 p[i] = p[j] ;
+                 p[j] = temp;
+               }
+        }
+       }
+ 
+      //display 
+      cout << "\n================================= =======================\n" ;
+      cout << " PROCESS\t BURST TIME\t finishtime\t wholetime\t weightwholetime\t WAITING TIME\n\n" ;
+      for ( i= 0 ;i<n;i++){
+         cout << "\tP" << p[i].processId << "\t\t" << p[i].burstTime;
+         cout << "\ t\t" << waitingTime << "\n" ;
+        waitingTime = waitingTime + p[i].burstTime ;
+     }
+     cout << "================= =======================================\n" ;
+  
+     //average waiting time 
+      cout << "求cjf平均周转时间:";
+     cout << averagewt/n<< "\n\n" ;
+     cout << "求fcfs平均带权周转时间" ;
+     cout << averagewwt/n<< "\n\n" ;
+     return  0 ;
+ }
+ 
