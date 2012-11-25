@@ -1,0 +1,169 @@
+
+#include "StdAfx.h"
+#include<iostream>
+using namespace std;
+#define MAX 10
+struct task_struct
+   {
+     char name[10];          /*进程名称*/
+     int number;             /*进程编号*/
+     float come_time;         /*到达时间*/
+     float run_begin_time;     /*开始运行时间*/
+     float run_time;           /*运行时间*/
+     float run_end_time;       /*运行结束时间*/
+     int priority;              /*优先级*/
+     int order;               /*运行次序*/
+     int run_flag;            
+   }tasks[MAX];
+int counter;                  /*实际进程个数*/
+int fcfs();                     /*先来先服务*/
+int sjf();           		 /*短作业优先*/
+int pinput();          		/*进程参数输入*/
+int poutput();        		
+
+void main()
+{ int option;
+char select='y';
+pinput();
+while(select=='y')
+{
+printf("请选择调度算法（0~2）:\n");
+printf("1.先来先服务\n");
+printf("2.短作业优先\n");
+printf("0.退出\n");
+
+cin>>option;
+switch (option)
+{ 
+case 0:
+     printf("运行结束。\n");
+     break; 
+case  1:
+     cout<<"对进程按先来先服务调度";
+     fcfs();
+     poutput();
+     break;
+case 2:
+printf("对进程按短作业优先调度。\n\n");
+     sjf();
+     poutput();
+     break;
+}
+cout<<"contiul? YES:y  NO:n \n";
+	cin>>select;
+}
+system("pause");
+}
+int fcfs()    /*先来先服务*/
+{
+float time_temp=0;
+int i;
+int number_schedul;
+time_temp=tasks[0].come_time;
+for(i=0;i<counter;i++)
+{
+   tasks[i].run_begin_time=time_temp;
+   tasks[i].run_end_time=tasks[i].run_begin_time+tasks[i].run_time;
+   tasks[i].run_flag=1;
+   time_temp=tasks[i].run_end_time;
+   number_schedul=i;
+   tasks[number_schedul].order=i+1;
+}
+return 0;
+}
+int sjf()     /*短作业优先*/
+{
+float temp_time=0;
+int i=0,j;
+int number_schedul,temp_counter;
+float run_time;
+run_time=tasks[i].run_time;
+j=1;
+while ((j<counter)&&(tasks[i].come_time==tasks[j].come_time))
+   {
+    if (tasks[j].run_time<tasks[i].run_time) 
+     { 
+      run_time=tasks[j].run_time;
+      i=j;
+     }
+    j++;
+   }     /*查找第一个被调度的进程*/
+/*对第一个被调度的进程求相应的参数*/
+number_schedul=i;
+tasks[number_schedul].run_begin_time=tasks[number_schedul].come_time;
+tasks[number_schedul].run_end_time=tasks[number_schedul].run_begin_time+tasks[number_schedul].run_time;
+tasks[number_schedul].run_flag=1;
+temp_time=tasks[number_schedul].run_end_time;
+tasks[number_schedul].order=1;
+temp_counter=1;
+while (temp_counter<counter)
+{
+   for(j=0;j<counter;j++)
+    {
+        if((tasks[j].come_time<=temp_time)&&(!tasks[j].run_flag))
+        {
+	   run_time=tasks[j].run_time;number_schedul=j;break;}
+        }
+
+   for(j=0;j<counter;j++)    
+	{ 
+	 if((tasks[j].come_time<=temp_time)&&(!tasks[j].run_flag))
+          if(tasks[j].run_time<run_time) 
+            {
+  				run_time=tasks[j].run_time;
+                number_schedul=j;
+             }
+   } 
+        /*查找下一个被调度的进程*/
+   /*对找到的下一个被调度的进程求相应的参数*/
+   tasks[number_schedul].run_begin_time=temp_time;
+   tasks[number_schedul].run_end_time=tasks[number_schedul].run_begin_time+tasks[number_schedul].run_time;
+   tasks[number_schedul].run_flag=1;
+   temp_time=tasks[number_schedul].run_end_time;
+   temp_counter++;
+   tasks[number_schedul].order=temp_counter;  
+}return 0;
+}
+int pinput() /*进程参数输入*/
+{ 
+  int i;
+  printf("please input the process counter:\n");
+  scanf("%d",&counter);
+
+for(i=0;i<counter;i++)
+{ printf("******************************************\n");
+   printf("please input the process of %d th :\n",i+1);
+   printf("please input the name:\n");
+   scanf("%s",tasks[i].name);
+   printf("please input the number:\n");
+   scanf("%d",&tasks[i].number);
+   printf("please input the come_time:\n");
+   scanf("%f",&tasks[i].come_time);
+   printf("please input the run_time:\n");
+   scanf("%f",&tasks[i].run_time);
+   printf("please input the priority:\n");
+   scanf("%d",&tasks[i].priority);
+   tasks[i].run_begin_time=0;
+   tasks[i].run_end_time=0;
+   tasks[i].order=0;
+   tasks[i].run_flag=0;
+}
+return 0;
+}
+
+int poutput() /*调度结果输出*/
+{
+int i;
+float turn_round_time=0,f1,w=0;
+printf("name number come_time run_time run_begin_time run_end_time priority order turn_round_time\n");
+for(i=0;i<counter;i++)
+{
+   f1=tasks[i].run_end_time-tasks[i].come_time;
+   turn_round_time+=f1;
+   w+=(f1/tasks[i].run_time);
+   printf(" %s, %d, %5.3f, %5.3f, %5.3f, %5.3f, %d, %d, %5.3f\n",tasks[i].name,tasks[i].number,tasks[i].come_time,tasks[i].run_time,tasks[i].run_begin_time,tasks[i].run_end_time,tasks[i].priority,tasks[i].order,f1);
+}
+printf("average_turn_round_timer=%5.2f\n",turn_round_time/counter);
+printf("weight_average_turn_round_timer=%5.2f\n",w/counter);
+return 0;
+}
