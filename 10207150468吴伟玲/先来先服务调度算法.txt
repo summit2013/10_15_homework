@@ -1,0 +1,172 @@
+#include <iostream>
+
+using namespace std;
+
+class process{
+public:
+char name;
+int  reachtime;
+int  runtime;
+float p_time;
+float  p_wtime;
+
+void  set_process();
+void  show_process();
+};
+void process::set_process(){
+cout<<"名字：";
+cin>>name;
+cout<<"到达时间：";
+cin>>reachtime;
+cout<<"运行时间：";
+cin>>runtime;
+}
+void process::show_process()
+{
+    cout<<"周转时间："<<p_time<<endl;
+    cout<<"带权周转时间："<<p_wtime<<endl;
+
+}
+int main()
+{
+    process p[4];
+    float avertime;
+    float averwtime;
+    //pt=p;
+
+    char ch;
+    for(int i=0;i<4;i++)
+    {
+        cout<<"请输入第"<<i+1<<"个进程信息："<<endl;
+        p[i].set_process();
+    }
+    cout<<endl;
+    void FCFS(process p[],int n,float &,float  &);
+    void SJF(process p[],int n,float&,float &);
+    cout<<"请选择调度算法：f代表先来先服务,最短作业优先法未实现。"<<endl;
+    cin>>ch;
+    if (ch=='f')
+    FCFS(p,4,avertime,averwtime);
+   for (int i=0;i<4;i++)
+   {
+       cout<<p[i].name<<"进程"<<endl;
+       p[i].show_process();
+   }
+   cout<<endl;
+   cout<<"平均周转时间为："<<avertime<<endl;
+   cout<<"平均带权周转时间为："<<averwtime<<endl;
+   cout<<endl;
+    //cout << "Hello world!" << endl;
+    return 0;
+}
+
+void FCFS(process p[],int n,float &avertime,float &averwtime)
+{
+   int starttime[4];          //辅助变量，用于计算进程开始时间。
+    int finishtime[4];        //辅助变量，用于计算进程完成时间。
+    int k,a=0;
+   process temp;
+    for (int i=0;i<3;i++)  //对进程的达到时间进行升序排序，确定执行顺序。
+    {
+      k=i;
+      for(int j=i+1;j<4;j++)
+      if (p[k].reachtime>p[j].reachtime)
+      k=j;
+      temp=p[k];
+      p[k]=p[i];
+      p[i]=temp;
+    }
+
+    //对第一个进程的特殊处理（因为它不受前面进程的影响）。
+    p[0].p_time=p[0].runtime;
+    p[0].p_wtime=1;
+    finishtime[0]=p[0].reachtime+p[0].runtime;
+    starttime[0]=p[0].reachtime;
+
+
+    //对剩余进程进行调度。
+    for(int i=1;i<4;i++)
+
+    {
+        starttime[i]=finishtime[i-1];
+        finishtime[i]=starttime[i]+p[i].runtime;
+        p[i].p_time=finishtime[i]-p[i].reachtime;
+        p[i].p_wtime=p[i].p_time/p[i].runtime;
+        avertime+=p[i].p_time;
+        averwtime+=p[i].p_wtime;
+        a++;
+    }
+    avertime=(avertime+p[0].p_time)/(a+1);
+    averwtime=(averwtime+p[0].p_wtime)/(a+1);
+}
+
+//短作业优先法。
+void SJF(process p[],int n,float&avertime,float &averwtime)
+{  int k,a=0;
+   int  count=0;
+   int sort1[4];   //用于存放进程到达时间的位序。
+    int last;
+   int sort3[4];     //用于存放进程剩余时间的位序。
+   int resttime[4]={0,0,0,0};
+   int finishtime[4];
+   for(int i=0;i<3;i++)   //对进程的到达时间进行排序。
+   {
+       k=i;
+       for(int j=i+1;j<4;j++)
+       {
+          if(p[k].reachtime>p[j].reachtime)
+           k=j;
+       }
+
+       sort1[i]=k;
+   }
+
+   for (int i=0;i<4;)
+   {
+       resttime[sort1[i]]=p[sort1[i]].runtime-(p[sort1[i+1]].reachtime-p[sort1[i]].reachtime);
+       if(resttime[sort1[i]]>p[sort1[i+1]].runtime)
+       i++;
+      else
+      if (resttime[sort1[i]]<=0)
+      {
+          finishtime[sort1[i]]=p[sort1[i]].reachtime+p[sort1[i]].runtime;
+          p[sort1[i]].p_time=p[sort1[i]].runtime;
+          p[sort1[i]].p_wtime=1;
+          count++;
+          last=i;
+          i++;
+      }
+      else
+      {
+          resttime[sort1[i]]=resttime[sort1[i]]-(p[sort1[i+2]].reachtime-p[sort1[i]].reachtime);
+          i=i+2;
+      }
+   }
+
+    for(int i=0;i<4;i++)
+   {
+       if (resttime[sort1[i]]=0)
+       resttime[sort1[i]]=p[sort1[i]].runtime;
+   }
+
+   for(int i=0;i<3;i++)
+   {
+       k=i;
+       for(int j=i+1;j<4;j++)
+       if(resttime[k]>resttime[j])
+       k=j;
+       sort3[i]=k;
+   }
+
+   for(int i=count;i<4;i++)
+   {
+       finishtime[sort3[i]]=finishtime[sort3[i-1]]+p[sort3[i]].runtime;
+       p[sort3[i]].p_time=finishtime[sort3[i]]-p[sort3[i]].reachtime;
+       p[sort3[i]].p_wtime=p[sort3[i]].p_time/p[sort3[i]].runtime;
+       avertime+=p[i].p_time;
+        averwtime+=p[sort3[i]].p_wtime;
+       a++;
+   }
+   avertime=(avertime+p[sort1[last]].p_time)/(a+1);
+    averwtime=(averwtime+p[sort1[last]].p_wtime)/(a+1);
+}

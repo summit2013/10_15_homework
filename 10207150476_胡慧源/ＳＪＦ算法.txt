@@ -1,0 +1,124 @@
+#include "stdio.h"
+struct sjf{
+char name[10];
+float arrivetime;
+float servicetime;
+float starttime;
+float finishtime;
+float zztime;
+float dqzztime;
+};
+sjf a[100];
+void input(sjf *p,int N)
+{ int i;
+printf("intput the process's name & arrivetime & servicetime:\nfor exmple: a 0 100\n");
+for(i=0;i<=N-1;i++)
+{
+printf("input the %dth process's information:\n",i+1);
+scanf("%s%f%f",&p[i].name,&p[i].arrivetime,&p[i].servicetime);
+}
+
+}
+
+void Print(sjf *p,float arrivetime,float servicetime,float starttime,float finishtime,float zztime,float dqzztime,int N)
+{int k;
+
+     printf("run order:");
+     printf("%s",p[0].name);
+for(k=1;k<N;k++)
+{printf("-->%s",p[k].name);
+} 
+     printf("\nthe process's information:\n");
+   printf("\nname\tarrive\tservice\tstart\tfinish\tzz\tdqzz\n");
+     for(k=0;k<=N-1;k++)
+     { printf("%s\t%-.2f\t%-.2f\t%-.2f\t%-.2f\t%-.2f\t%-.2f\t\n",p[k].name,p[k].arrivetime,p[k].servicetime,p[k].starttime,p[k].finishtime,p[k].zztime,p[k].dqzztime);
+}
+   
+}
+//pai xu
+void sort(sjf *p,int N)
+{
+     for(int i=0;i<=N-1;i++)
+         for(int j=0;j<=i;j++)
+             if(p[i].arrivetime<p[j].arrivetime)
+             {
+                 sjf temp;
+                 temp=p[i];
+                 p[i]=p[j];
+                 p[j]=temp;
+             }
+}
+
+//yun xing jieduan
+void deal(sjf *p, float arrivetime,float servicetime,float starttime,float finishtime,float &zztime,float &dqzztime,int N)
+{ int k;
+    for(k=0;k<=N-1;k++)
+     {
+         if(k==0)
+            { 
+    p[k].starttime=p[k].arrivetime;
+     p[k].finishtime=p[k].arrivetime+p[k].servicetime;}
+         else
+           {
+    p[k].starttime=p[k-1].finishtime;
+             p[k].finishtime=p[k-1].finishtime+p[k].servicetime;}
+     }
+
+     for(k=0;k<=N-1;k++)
+     {
+     p[k].zztime=p[k].finishtime-p[k].arrivetime;
+     p[k].dqzztime=p[k].zztime/p[k].servicetime;
+     
+     }
+}
+
+
+
+void sjff(sjf *p,int N)
+{float arrivetime=0,servicetime=0,starttime=0,finishtime=0,zztime=0,dqzztime=0;
+
+sort(p,N);
+
+        for(int m=0;m<N-1;m++)
+        {if(m==0)
+            p[m].finishtime=p[m].arrivetime+p[m].servicetime;
+         else
+            p[m].finishtime=p[m-1].finishtime+p[m].servicetime;
+  
+         int i=0;
+         for(int n=m+1;n<=N-1;n++)
+   {if(p[n].arrivetime<=p[m].finishtime)
+           i++;
+   }
+float min=p[m+1].servicetime;
+int next=m+1;//m+1=n
+        for(int k=m+1;k<m+i;k++)
+        {
+          if(p[k+1].servicetime<min)
+            {min=p[k+1].servicetime;
+            next=k+1;}
+            
+            }
+           sjf temp;
+            temp=p[m+1];
+            p[m+1]=p[next];
+            p[next]=temp;
+        }
+        
+   deal(p,arrivetime,servicetime,starttime,finishtime,zztime,dqzztime,N);
+   
+   Print(p,arrivetime,servicetime,starttime,finishtime,zztime,dqzztime,N);
+}
+
+
+void main()
+{ int N;
+   printf("------短作业优先调度算法------\n");
+   printf("input the process's number:\n");
+   scanf("%d",&N);
+
+   input(a,N);
+   sjf *b=a;
+   sjf *c=a;
+   sjff(b,N);
+}
