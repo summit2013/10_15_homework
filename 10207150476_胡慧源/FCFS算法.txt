@@ -1,0 +1,126 @@
+#include <iostream> 
+#include <cstdlib> 
+#include <numeric>   
+using namespace std; 
+#define MAX 10   
+char process[MAX]="";   //进程标识   
+int arrivetime[MAX];//达到时间   
+int servicetime[MAX];//服务时间   
+int finishtime[MAX];    //完成时间   
+int turnovertime[MAX];//周转时间   
+double avgturnovertime; //平均周转时间   
+double powertime[MAX]; //带权周转时间   
+double avgpowertime;    //平均带权周转时间   
+int init();    
+void FCFS();   
+void output();   
+void showsingle(int* arr,int len);   
+//初始化，并返回进程数   
+int init()   
+{   
+    cout << "输入进程队列标识(用单个字母表示一个进程,字母间用tab间隔)" << endl;   
+    int i=0;   
+    while(i<MAX)   
+    {   
+        cin.get(process[i]);   
+        if(process[i]==' ' || process[i]=='\t')   
+        {   
+            continue;   
+        }   
+        if(process[i]=='q' || process[i]=='\n')   
+        {   
+            process[i]='\0';   
+            break;   
+        }   
+        i++;   
+           
+    }   
+    int len=strlen(process);   
+    cout << "依次输入进程到达时间(时间之间用tab间隔)" << endl;   
+       
+    for(int ix=0; ix<len; ix++)   
+    {   
+        cin >> arrivetime[ix];   
+    }   
+    cout << "依次输入服务时间(时间之间用tab间隔)" <<endl;   
+    for(ix=0; ix<len; ix++)   
+    {   
+        cin >> servicetime[ix];   
+    }   
+    return len;   
+}   
+void FCFS(int len)   
+{   
+    //完成时间的计算   
+    for(int ix=0; ix<len; ix++)   
+    {   
+        finishtime[ix]=accumulate(servicetime,servicetime+ix+1,0);   
+    }   
+    //周转时间计算   
+    for(ix=0; ix<len; ix++)   
+    {   
+        turnovertime[ix]=finishtime[ix]-arrivetime[ix];   
+    }   
+    avgturnovertime=accumulate(turnovertime,turnovertime+len,0)*1.0/len;   
+    //带权周转时间计算   
+    for(ix=0; ix<len; ix++)   
+    {   
+        powertime[ix]=turnovertime[ix]*1.0/servicetime[ix];   
+    }   
+    //平均带权周转时间   
+    double tmptotal=0.0;   
+    for(ix=0; ix<len; ix++)   
+    {   
+        tmptotal+=powertime[ix];   
+    }   
+    avgpowertime=tmptotal/len;   
+}   
+void output()   
+{   
+    cout <<endl<<endl;   
+    cout <<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;   
+    int len=strlen(process);   
+    //显示进程序列   
+    for(int ix=0; ix<len; ix++)   
+    {   
+        cout <<process[ix] << "\t";   
+    }   
+    cout << endl;   
+    //显示到达时间序列   
+    showsingle(arrivetime,len);   
+    //显示服务时间序列   
+    showsingle(servicetime,len);   
+    cout <<endl<<endl;   
+    //显示完成时间序列   
+    showsingle(finishtime,len);   
+    //显示周转时间序列   
+    showsingle(turnovertime,len);   
+    cout << "平均周转时间 :" << avgturnovertime << endl;   
+    //显示带权周转时间序列   
+    for(ix=0; ix<len; ix++)   
+    {   
+        cout << powertime[ix] << "\t";   
+    }   
+    cout <<endl;   
+    cout << "平均带权周转时间:" << avgpowertime << endl;   
+    cout <<"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;   
+}   
+//对int类型的数组进行格式化输出   
+void showsingle(int* arr,int len)   
+{   
+       
+    for(int ix=0; ix<len; ix++)   
+    {   
+        cout << arr[ix] << "\t";   
+    }   
+    cout <<endl;   
+}   
+int main()   
+{   
+    cout << "\t\t||本程序是先来先服务算法||" << endl;   
+    int len = init();   
+    FCFS(len);   
+    output();   
+    system("PAUSE");   
+    return 0;   
+}  
