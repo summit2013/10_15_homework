@@ -1,0 +1,130 @@
+#include "stdio.h"
+#include<iomanip>
+#include <iostream>
+using namespace std;
+
+struct sjf{
+char name[10];
+float arrivalTime;
+float serviceTime;
+float executeTime;
+float finishTime;
+float Tr;
+float S;
+};
+sjf a[100];
+int i,j,k;
+
+void input(sjf *p,int n)
+{
+	for(i=0;i<n;i++)
+	{
+        cout<<"    进程名称：";
+        cin>>p[i].name;
+        cout<<"到达时间：";
+        cin>>p[i].arrivalTime;
+        cout<<"服务时间：";
+        cin>>p[i].serviceTime;
+        cout<<endl;
+    }
+}
+
+void out(sjf *p,float arrivalTime,float serviceTime,float executeTime,float finishTime,float Tr,float S,int n)
+{
+    cout << "\n========================================================\n";
+    cout << "进程名  到达时间  服务时间  开始时间  完成时间     tr    tr/ts"<<endl;;
+	for(i=0; i<n; i++)
+	{
+       cout<<"  "<<p[i].name<<setw(8)<<p[i].arrivalTime<<setw(10)<<p[i].serviceTime<<setw(10)<<p[i].executeTime<<setw(10)<<p[i].finishTime<<setw(10)<<p[i].Tr<<setw(12)<<p[i].S<<endl;
+	}
+}
+
+void arr(sjf *p,int n)
+{
+    for(int i=0;i<n;i++)
+		for(int j=0;j<=i;j++)
+			if(p[i].arrivalTime<p[j].arrivalTime)
+			{
+				sjf temp;
+                temp=p[i];
+                p[i]=p[j];
+                p[j]=temp;
+             }
+}
+
+
+void run(sjf *p, float arrivalTime,float serviceTime,float executeTime,float finishTime,float &Tr,float &s,int n)
+{
+	for(i=0;i<n;i++)
+	{
+		if(i==0)
+		{
+			p[i].executeTime=p[i].arrivalTime;
+			p[i].finishTime=p[i].arrivalTime+p[i].serviceTime;
+		}
+		else
+		{
+			p[i].executeTime=p[i-1].finishTime;
+            p[i].finishTime=p[i-1].finishTime+p[i].serviceTime;
+		}
+	}
+	for(i=0;i<n;i++)
+	{
+		p[i].Tr=p[i].finishTime-p[i].arrivalTime;
+        p[i].S=p[i].Tr/p[i].serviceTime;
+	}
+}
+
+void sjf1(sjf *p,int n)
+{
+	float arrivalTime=0,serviceTime=0,executeTime=0,finishTime=0,Tr=0,S=0;
+	arr(p,n);
+	for(i=0;i<n-1;i++)
+	{
+		if(i==0)
+			{
+				p[i].finishTime=p[i].arrivalTime+p[i].serviceTime;
+		    }
+         else
+            {
+				p[i].finishTime=p[i-1].finishTime+p[i].serviceTime;
+		    }
+		int m=0;
+		for(j=i+1;j<n;j++)
+		{
+			if(p[j].arrivalTime<=p[i].finishTime)
+            m++;
+		}
+		float min=p[i+1].serviceTime;
+		int next=i+1;
+        for(k=i+1;k<m+i;k++)
+		{
+			if(p[k+1].serviceTime<min)
+			{
+				min=p[k+1].serviceTime;
+                next=k+1;
+			}
+		}
+		sjf temp;
+        temp=p[i+1];
+        p[i+1]=p[next];
+        p[next]=temp;
+	}
+	run(p,arrivalTime,serviceTime,executeTime,finishTime,Tr,S,n);
+	out(p,arrivalTime,serviceTime,executeTime,finishTime,Tr,S,n);
+}
+
+
+int main()
+{
+    int n;
+  	cout<<"最短作业优先法"<<endl;
+	cout << "进程次数: ";
+	cin >> n;
+	cout<<endl;
+    input(a,n);
+    sjf *b=a;
+    sjf *c=a;
+    sjf1(b,n);
+   return 0;
+}
