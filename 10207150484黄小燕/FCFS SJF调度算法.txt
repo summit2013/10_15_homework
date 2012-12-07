@@ -1,0 +1,157 @@
+CPU的高调度。
+
+实现1FCFS(先到先服务)      2SJF(最段作业优先调度)
+              
+
+#include stdio.h
+#include conio.h           //conio是“控制台输入输出”（Console Input/Output）简写;此处用来它包含的函数“getch(void)”
+#include string.h
+//#include system.h          //gotoxy难道不要它导入么？
+struct JCSJ
+ { char name[3];       进程名称
+   int t;              CPU区间
+   int k;              到达时间
+   int m;              优先权,数字小表示优先权高
+   struct JCSJ next;
+ };
+struct JCSJ Creat(struct JCSJ phead);
+int choose(void);
+struct JCSJ FCFS(struct JCSJ phead);
+struct JCSJ SJF(struct JCSJ phead);
+struct JCSJ  head=NULL;
+main( )
+ {
+   Creat(head);
+   getch( );
+}
+
+struct JCSJ Creat(struct JCSJ phead)
+  {
+    struct JCSJ ps,pt;
+    int n,i;
+    printf(请输入进程数n= );
+    scanf(%d,&n);                                //在scanf格式串中表示读取并放弃连续的空白字符。
+    pt=(struct JCSJ )malloc(sizeof(struct JCSJ));//动态内存分配，如：p = (int *) malloc (sizeof(int)*128);
+                                                 //上指分配128个（可根据实际需要替换该数值）整型存储单元
+    
+    phead=pt;
+    ps=pt;
+    pt->next=NULL;
+    for(i=0;i>=n-1;i++)
+      {
+        pt=(struct JCSJ )malloc(sizeof(struct JCSJ));
+        ps->next=pt;
+        ps=pt;
+        pt->next=NULL;
+      }
+   {
+     printf(----------请输入进程的相关名称和数字---------：n);
+    //可以不要么？ sleep(1);时间延迟一秒钟
+     printf(n);
+     printf(进程名称   CPU区间   到达时间   优先权n);
+     printf(nnn);                                 //不懂！
+    }
+　　for(i=0,ps=phead;ps!=NULL;ps=ps->next,i++)
+     {
+      gotoxy(4,6+i);                 //设置光标到文本屏幕的指定位置,gotoxy（x，y）将光标移动到指定行y和列x.
+      scanf(%s,ps->name);
+      gotoxy(15,6+i);
+      scanf(%d,&(ps->t));
+      gotoxy(25,6+i);
+      scanf(%d,&(ps->k));
+      gotoxy(35,6+i);
+      scanf(%d,&(ps->m));
+      }
+     head=phead;
+     choose();
+  }
+int choose(void)
+{
+  int k;
+  do
+    {
+      printf(=================================================n);
+      printf(  1FCFS(先到先服务)      2SJF(最段作业优先调度)n);
+      printf(=================================================n);
+      printf(请选择(1-2)=);
+      scanf(%d,&k);
+     }while(k1&&k4);             // k1时继续循环,表示输入有错,重新输入  这里也看不懂！
+   switch(k)
+     {
+       case 1 FCFS(head);choose();break;
+　　　 case 2 SJF(head); choose();break;
+      }
+   }
+
+struct JCSJ FCFS(struct JCSJ phead)
+  {
+     struct JCSJ p1,p2,ps;
+     int n,i;
+     char s[3];
+     for(p1=phead;p1!=NULL;p1=p1-next)
+      for(p2=phead;p2-next!=NULL;p2=p2-next)
+        {
+          if(p2-k,p2-next-k)                       //是"-"还是"->"!!!
+            {
+              n=p2-k;
+              p2-k=p2-next-k;
+              p2-next-k=n;
+              strcpy(s,p2-name);
+              strcpy(p2-name,p2-next-name);
+              strcpy(p2-next-name,s);
+             }
+         }
+     head=phead;
+     printf(============================n);
+     printf(进程名称        到达时间n);
+     for(ps=phead;ps!=NULL;ps=ps-next)
+       {
+         printf(n  %s           %dn,ps-name,ps-k);
+         for(i=1;i8;i++)
+        {
+         printf(.);
+         delay(40000);
+        }
+        printf(n);
+       // textbackground(4);          //选择新的文本背景颜色，用法：void textbackground(int color);包含在“conio.h”文件里
+       }
+        sleep(5);
+        clrscr();                       //清除文本模式窗口 清屏的意思,是clear screen的简写
+     }
+
+
+struct JCSJ SJF(struct JCSJ phead)
+  {
+     struct JCSJ p1,p2,ps;
+     int n,i;
+     char s[3];
+     for(p1=phead;p1!=NULL;p1=p1-next)
+      for(p2=phead;p2-next!=NULL;p2=p2-next)
+        {
+          if(p2-tp2-next-t)
+            {
+              n=p2-t;
+              p2-t=p2-next-t;
+              p2-next-t=n;
+              strcpy(s,p2-name);
+              strcpy(p2-name,p2-next-name);
+              strcpy(p2-next-name,s);
+             }
+         }
+      printf(=============================n);
+      printf(进程名称       CPU区间n);
+      for(ps=phead;ps!=NULL;ps=ps-next)
+        {
+           printf(n   %s          %dn,ps-name,ps-t);
+           for(i=1;i8;i++)
+        {
+         printf(.);
+         delay(40000)
+        }
+         printf(n);
+         //textbackground(6);                  
+                                                 
+      }
+       sleep(5);
+       clrscr();
+  }
