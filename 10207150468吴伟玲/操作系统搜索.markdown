@@ -36,7 +36,7 @@ Android一词的本义指“机器人”，同时也是Google于2007年11月5日
 
 谷歌 Android的核心,其实是一款十分不可思议的操作系统。不过,目前谷歌 Android系统的境况并不是十分好,甚至可以说发展的有些困惑。这主要是由于像HTC、三星、LG等OEM厂商继续用它们自己的皮肤去包装这个系统,造成了混乱且不流畅的用户体验。如果你把一部HTC的Evo 3D和一部Nexus S交给某个外行人,它们或许还没法看出这两部手机用的是同一个操作系统。OEM厂商的尝试很难将它们区分开并为它们的产品创建追随者,这引起了一场混战。像Apple、HP、RIM都是使用自家生产的硬件去装载操作系统。Android当然可以通过更强大的控制来完全排除这个问题,即使这可能会制约了 Android的产量和商机。　
 
-[谷歌Android 参考链接1] (http://www.soft568.com/info/detail/16-20198.html)
+[谷歌Android 参考链接1](http://baike.baidu.com/view/1241829.htm)
 
 [谷歌Android 参考链接2](http://www.soft568.com/info/detail/16-20198.html)
 
@@ -62,9 +62,9 @@ Apple的iOS平台现在已拥有巨大的统治地位,这是因为Apple的优质
 
 Windows Phone是微软发布的一款手机操作系统，它将微软旗下的Xbox Live游戏、Zune音乐与独特的视频体验整合至手机中。2010年10月11日晚上9点30分，微软公司正式发布了智能手机操作系统Windows Phone，同时将谷歌的Android和苹果的IOS列为主要竞争对手。2011年2月，诺基亚与微软达成全球战略同盟并深度合作共同研发。2012年3月21日，Windows Phone 7.5登陆中国。6月21日，微软正式发布最新手机操作系统Windows Phone 8，Windows Phone 8采用和Windows 8相同的内核。
 
-[参考链接1](http://baike.baidu.com/view/2708518.htm) 
+[参考链接](http://baike.baidu.com/view/2708518.htm) 
 
-[参考链接2](http://book.51cto.com/art/201207/346451.htm)
+
 
 ###总结：身为一名医学信息专业的学生，我们应当学习操作系统的基本原理。在课余时间，应当多看看有关这方面的杂志，浏览相关的网站，对当前操作系统的发展趋势有所了解。
 
