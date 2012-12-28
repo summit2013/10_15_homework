@@ -1,0 +1,70 @@
+
+#include<iostream>
+#include<iomanip>
+using namespace std;
+    int p[100];
+	float arrivalTime[100];
+	float serviceTime[100];
+	float executeTime[100];
+	float finishTime[100];
+	float Tr[100];
+	float S[100];
+    char a[100];
+	float m,n,averageTr,averageS;
+	int i;
+	int	j;
+	int Processes;
+void fcfs()
+{
+	m=0;
+	n=0;
+	cout<<"先来先服务"<<endl;
+	cout << "进程次数: ";
+	cin >> Processes;
+	j= Processes;
+    for(i=0; i<Processes; i++)
+	{
+		p[i]=i+1;
+		cout << "进程 " << i+1 << "\n";
+        cout << "进程名：";
+        cin>>a[i];
+        cout << "到达时间：";
+        cin >>arrivalTime[i];
+        cout << "服务时间： ";
+        cin >>serviceTime[i];
+		cout<<endl;
+		if (i==0)
+				{
+					finishTime[0]=serviceTime[0];
+                    executeTime[0]=0;
+				}
+		else 
+		{
+			finishTime[i]=finishTime[i-1]+serviceTime[i];
+			executeTime[i]=finishTime[i-1];
+		}
+		Tr[i]=finishTime[i]-arrivalTime[i];
+		S[i]=Tr[i]/serviceTime[i];
+		m=m+Tr[i];
+		n=n+S[i];
+	}
+	averageTr=m/j;
+	averageS=n/j;
+	cout << "\n========================================================\n";
+    cout << "进程   进程名  到达时间  服务时间  开始时间  完成时间     tr    tr/ts"<<endl;;
+	for(i=0; i<Processes; i++)
+	{
+       cout<<"  "<<p[i]<<setw(8)<<a[i]<<setw(8)<<arrivalTime[i]<<setw(10)<<serviceTime[i]<<setw(10)<<executeTime[i]<<setw(10)<<finishTime[i]<<setw(10)<<Tr[i]<<setw(12)<<S[i]<<endl;
+    }
+	cout<<"平均周转时间："<<averageTr<<endl;
+	cout<<"平均带权周转时间："<<averageS<<endl;
+}
+
+int main()
+{
+	char a;
+	fcfs();
+	cin>>a;
+	return 0;
+}
+
