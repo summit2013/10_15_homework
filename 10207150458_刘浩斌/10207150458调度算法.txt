@@ -1,0 +1,173 @@
+操作系统调度作业 信管15班 刘浩斌
+
+#include<iostream>
+#include<iomanip>
+using namespace std;
+ static const int max=100;
+ int time1[max];//到达时间
+ int time2[max];//服务时间
+ int time3[max];//完成时间
+ int time4[max];//完整时间
+ double wtime4[max];//完整的带权时间
+ double fcfs_atime4,sjf_atime4;//平均时间
+ double fcfs_awtime4,sjf_awtime4;//平均带权时间
+ int sjf[max];//这种sjf中使用
+ int num=0;
+ int nowtime=0;//现在时间
+ double swtime=0,swwtime=0;
+ int i,arithmetic;//arithmetic用来选择算法
+
+ void fcfs()
+  {
+   for(i=0;i<num;i++)
+   {
+  if(time1[i]>nowtime) //当到达时间比现在时间迟
+ {
+   nowtime=time1[i];
+  }
+  nowtime=nowtime+time2[i];//算出总的到达时间和服务时间
+  time3[i]=nowtime;//完成时间
+  time4[i]=time3[i]-time[i];//算出总时间
+  wtime4[i]=(double)time4[i]/time2[i]
+  swtime=swtime+time4[i];
+  swwtime=swwtime+wtime4[i];
+ }
+ fcfs_atime4=swtime/num;
+ fcfs_awtime4=swwtime/num;
+ for(i=0;i<num;i++)
+{
+  cout<<"arrival time":<<time3[i]-time2[i]<<": process"<<i+1<<"begin to run."<<"finish time:<<time3<<"the whole time:"<<time4[i]<<setprecision(3)<<"the weight whole time:"<< wtime4<<setprecision(3)<<endl;
+}
+ cout<<"average whole time："<<fcfs_atime4<<endl;
+	cout<<"average weight whole time："<<fcfs_awtime4<<endl;
+}
+
+void sjf()
+{
+  int min=0;
+	nowtime=time1[0]+time2[0];
+        time3[0]=nowtime;
+	sjf[0]=1000;
+	cout<<"time"<<time3[0]-time2[0]<<": process"<<1<<"begin to run。";
+	int allin=0,j,k;
+	for(i=1;i<Num;i++)
+	{
+		k=1;min=0;
+		if(allin==0)
+		{
+			j=0;
+			while(time1[j]<=nowtime && j<num)
+			{
+				j++;
+				if(j>=num)
+				{
+					allin=1;
+				}
+			}
+		}
+		else
+		{
+			j=num;
+		}
+		j=j-1;
+		while(k<=j)
+		{
+			if(sjf[k]==0)
+				k++;
+			else
+			{
+				if(sjf[min]>sjf[k])
+					min=k;
+				k++;
+			}
+		}
+		sjf[min]=0;
+		nowtime=nowtime+time2[min];
+		time3[min]=nowtime;
+	}
+	for(i=0;i<Num;i++)
+	{
+		time4[i]=time3[i]-time1[i];
+		wtime4[i]=(double)time4[i]/time2[i];
+		swtime=swtime+time4[i];
+		swwtime=swwtime+wtime4[i];
+	}
+	sjf_atime=swtime/num;
+        sjf_awtime=swwtime/num;
+	cout<<"  finish time："<<time3[0]<<"  the whole time："<<time4[0]<<setprecision(3)<<"  the weight whole time："<<WeightWholeTime[0]<<setprecision(3)<<endl;
+	for(i=1;i<Num;i++)
+	{
+		cout<<"time"<<time3[i]-time2[i]<<": process"<<i+1<<"begin to run。"<<"  finish："<<time3[i]<<"  the whole time："<<time4[i]<<setprecision(3)<<"  the weight whole time："<<wtime4[i]<<setprecision(3)<<endl;
+	}
+	cout<<"average the wholetime："<<sjf_atime<<endl;
+	cout<<"average the weightwholetime："<<sjf_awtime<<endl;
+}
+
+void input()
+{
+	cout<<"please sign the number of process：";
+	cin>>num;
+	while(num>100||num<=0)
+	{
+		cout<<"the number must be less than 100！please sign again：";
+		cin>>num;
+	}
+	
+	for(i=0;i<num;i++)
+	{
+		cout<<"please sign process"<<i+1<<"：arrival time";
+		cin>>time1[i];
+	}
+	
+	for(i=0;i<num;i++)
+	{
+		int data=0;
+		cout<<"please sign process"<<i+1<<" service time：";
+		cin>>data;
+		time2[i]=data;
+		sjf[i]=data;
+	}
+	cout<<"choose your arithmetic(1-FCFS,2-SJF): ";
+	cin>>arithmetic;
+	
+}
+
+
+void main()
+{
+
+	char flag='y';
+Loop:
+	nowtime=0;swtime=0;swwtime=0;
+    input();
+	if(arithmetic==1)
+		fcfs();
+	else if(arithmetic==2)
+		sjf();
+	else//error,please choose again
+	{
+		while(1)
+		{
+	  		cout<<"error,please choose again"<<endl;
+			cout<<"choose the arithmetic you want to use(1-FCFS,2-SJF): ";
+			cin>>arithmetic;
+			if(arithmetic==1)
+			{
+				fcfs();
+				break;
+			}
+			else if(arithmetic==2)
+			{
+				sjf();
+				break;
+			}
+		}
+	}
+	cout<<endl<<"print'y'or'Y'to continue，anyoneelse to quit：";
+	cin>>flag;
+	if(flag=='y' || flag=='Y')
+		goto Loop;
+}
+资料来自网络,已作修改
+
+	
