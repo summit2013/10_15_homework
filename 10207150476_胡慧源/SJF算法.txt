@@ -1,3 +1,5 @@
+//SJF  10207150476 บ๚ปÛิด
+
 #include "stdio.h"
 struct sjf{
 char name[10];
