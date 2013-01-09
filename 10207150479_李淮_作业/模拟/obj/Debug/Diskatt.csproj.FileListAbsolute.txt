@@ -1,0 +1,8 @@
+F:\28b4e0d77b60\Diskatt\bin\Debug\Diskatt.exe
+F:\28b4e0d77b60\Diskatt\bin\Debug\Diskatt.pdb
+F:\28b4e0d77b60\Diskatt\obj\Debug\ResolveAssemblyReference.cache
+F:\28b4e0d77b60\Diskatt\obj\Debug\Diskatt.Form1.resources
+F:\28b4e0d77b60\Diskatt\obj\Debug\ResGen.read.1.tlog
+F:\28b4e0d77b60\Diskatt\obj\Debug\ResGen.write.1.tlog
+F:\28b4e0d77b60\Diskatt\obj\Debug\Diskatt.exe
+F:\28b4e0d77b60\Diskatt\obj\Debug\Diskatt.pdb
